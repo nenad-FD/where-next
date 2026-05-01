@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   Alert,
   Box,
+  Button,
   Chip,
   CircularProgress,
   Divider,
@@ -10,7 +11,9 @@ import {
   Typography,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import AddIcon from '@mui/icons-material/Add'
 import { getCityById, type City } from '../services/cities'
+import { getCategories, type Category } from '../services/categories'
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -43,13 +46,29 @@ export default function GradDetalji() {
 
   return (
     <Box sx={{ maxWidth: 680 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4 }}>
-        <IconButton onClick={() => navigate('/gradovi')} size="small">
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h5" fontWeight={700} color="text.primary">
-          {city?.name ?? 'Detalji grada'}
-        </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <IconButton onClick={() => navigate('/gradovi')} size="small">
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h5" fontWeight={700} color="text.primary">
+            {city?.name ?? 'Detalji grada'}
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => navigate(`/gradovi/${id}/mesta/novo`)}
+          sx={{
+            bgcolor: '#aa3bff',
+            borderRadius: 2,
+            textTransform: 'none',
+            fontWeight: 600,
+            '&:hover': { bgcolor: '#9333ea' },
+          }}
+        >
+          Kreiraj mesto
+        </Button>
       </Box>
 
       {loading && <CircularProgress />}
