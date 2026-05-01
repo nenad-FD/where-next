@@ -1,22 +1,18 @@
-import { useEffect } from 'react'
-import { Box, Button, Card, CardMedia, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Box, Button, Card, CardMedia, CircularProgress, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useNavigate } from 'react-router-dom'
-import { getCities } from '../services/cities'
-
-const mockCities = [
-  { id: 1, name: 'Beograd', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Belgrade_-_panoramio_%28396%29.jpg/640px-Belgrade_-_panoramio_%28396%29.jpg' },
-  { id: 2, name: 'Novi Sad', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Petrovaradin_fortress_2.jpg/640px-Petrovaradin_fortress_2.jpg' },
-  { id: 3, name: 'Niš', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Nis_fortress_panorama.jpg/640px-Nis_fortress_panorama.jpg' },
-]
+import { getCities, type City } from '../services/cities'
 
 export default function Gradovi() {
   const navigate = useNavigate()
+  const [cities, setCities] = useState<City[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getCities()
-      .then((data) => console.log('cities:', data))
-      .catch((err) => console.error('cities error:', err))
+      .then(setCities)
+      .finally(() => setLoading(false))
   }, [])
 
   return (
@@ -41,6 +37,8 @@ export default function Gradovi() {
         </Button>
       </Box>
 
+      {loading && <CircularProgress />}
+
       <Box
         sx={{
           display: 'grid',
@@ -48,9 +46,10 @@ export default function Gradovi() {
           gap: 2.5,
         }}
       >
-        {mockCities.map((city) => (
+        {cities.map((city) => (
           <Card
             key={city.id}
+            onClick={() => navigate(`/gradovi/${city.id}`)}
             sx={{
               borderRadius: 3,
               overflow: 'hidden',
@@ -63,12 +62,14 @@ export default function Gradovi() {
               },
             }}
           >
-            <CardMedia
-              component="img"
-              image={city.image}
-              alt={city.name}
-              sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover' }}
-            />
+            {city.image_url && (
+              <CardMedia
+                component="img"
+                image={city.image_url}
+                alt={city.name}
+                sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover' }}
+              />
+            )}
             <Box sx={{ p: 1.5 }}>
               <Typography fontWeight={600} fontSize={14} color="text.primary">
                 {city.name}

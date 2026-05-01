@@ -15,6 +15,12 @@ export interface City {
 
 export type CreateCityPayload = Omit<City, 'id' | 'created_at' | 'updated_at'>
 
+export async function getCityById(id: string): Promise<City> {
+  const { data, error } = await supabase.from('cities').select('*').eq('id', id).single()
+  if (error) throw error
+  return data
+}
+
 export async function getCities(): Promise<City[]> {
   const { data, error } = await supabase.from('cities').select('*')
   if (error) throw error

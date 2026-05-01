@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Gradovi from './pages/Gradovi'
 import KreirajGrad from './pages/KreirajGrad'
+import GradDetalji from './pages/GradDetalji'
 import PolitikaPrivatnosti from './pages/PolitikaPrivatnosti'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={<Navigate to="/gradovi" replace />} />
             <Route path="/gradovi" element={<Gradovi />} />
             <Route path="/gradovi/novi" element={<KreirajGrad />} />
+            <Route path="/gradovi/:id" element={<GradDetalji />} />
             <Route path="/politika-privatnosti" element={<PolitikaPrivatnosti />} />
           </Routes>
         </Box>
