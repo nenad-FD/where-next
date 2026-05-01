@@ -33,13 +33,17 @@ export default function GradDetalji() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [city, setCity] = useState<City | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!id) return
-    getCityById(id)
-      .then(setCity)
+    Promise.all([getCityById(id), getCategories()])
+      .then(([cityData, categoriesData]) => {
+        setCity(cityData)
+        setCategories(categoriesData)
+      })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Greška pri učitavanju.'))
       .finally(() => setLoading(false))
   }, [id])
@@ -99,6 +103,35 @@ export default function GradDetalji() {
                 : null
             }
           />
+
+          <Box mt={2}>
+            <Typography variant="subtitle1" fontWeight={700} color="text.primary" mb={2}>
+              Kategorije
+            </Typography>
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 1.5 }}>
+              {categories.map((cat) => (
+                <Box
+                  key={cat.id}
+                  sx={{
+                    p: 2,
+                    borderRadius: 2,
+                    bgcolor: '#fff',
+                    border: '1px solid #e5e4e7',
+                    cursor: 'pointer',
+                    transition: 'border-color 0.15s, box-shadow 0.15s',
+                    '&:hover': {
+                      borderColor: '#aa3bff',
+                      boxShadow: '0 0 0 1px #aa3bff',
+                    },
+                  }}
+                >
+                  <Typography fontWeight={600} fontSize={14} color="text.primary">
+                    {cat.name}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Box>
         </Box>
       )}
     </Box>
