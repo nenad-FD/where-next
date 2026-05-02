@@ -46,7 +46,7 @@ export default function KategorijaDetalji() {
       getCategories(),
     ])
       .then(([placesData, categoriesData]) => {
-        setPlaces(placesData)
+        setPlaces((prev) => [...placesData, ...prev.filter((p) => p.id.startsWith('mock-'))])
         setCategory(categoriesData.find((c) => c.id === categoryId) ?? null)
       })
       .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Greška pri učitavanju.'))
