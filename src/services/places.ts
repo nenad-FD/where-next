@@ -20,6 +20,12 @@ export interface Place {
 
 export type CreatePlacePayload = Omit<Place, 'id' | 'created_at' | 'updated_at' | 'average_rating'>
 
+export async function getPlaceById(id: string): Promise<Place> {
+  const { data, error } = await supabase.from('places').select('*').eq('id', id).single()
+  if (error) throw error
+  return data
+}
+
 export async function getPlacesByCityAndCategory(cityId: string, categoryId: string): Promise<Place[]> {
   const { data, error } = await supabase
     .from('places')

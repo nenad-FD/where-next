@@ -6,6 +6,7 @@ import KreirajGrad from './pages/KreirajGrad'
 import GradDetalji from './pages/GradDetalji'
 import KreirajMesto from './pages/KreirajMesto'
 import KategorijaDetalji from './pages/KategorijaDetalji'
+import MestoDetalji from './pages/MestoDetalji'
 import PolitikaPrivatnosti from './pages/PolitikaPrivatnosti'
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/gradovi/:id" element={<GradDetalji />} />
             <Route path="/gradovi/:id/mesta/novo" element={<KreirajMesto />} />
             <Route path="/gradovi/:id/kategorije/:categoryId" element={<KategorijaDetalji />} />
+            <Route path="/gradovi/:id/kategorije/:categoryId/mesta/:placeId" element={<MestoDetalji />} />
             <Route path="/politika-privatnosti" element={<PolitikaPrivatnosti />} />
           </Routes>
         </Box>

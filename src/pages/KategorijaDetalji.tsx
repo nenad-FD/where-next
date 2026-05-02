@@ -75,7 +75,7 @@ export default function KategorijaDetalji() {
         {places.map((place) => (
           <Card
             key={place.id}
-            onClick={() => navigate(`/gradovi/${cityId}/mesta/${place.id}`)}
+            onClick={() => navigate(`/gradovi/${cityId}/kategorije/${categoryId}/mesta/${place.id}`)}
             sx={{
               borderRadius: 3,
               overflow: 'hidden',
