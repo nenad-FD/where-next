@@ -112,6 +112,7 @@ export default function GradDetalji() {
               {categories.map((cat) => (
                 <Box
                   key={cat.id}
+                  onClick={() => navigate(`/gradovi/${id}/kategorije/${cat.id}`)}
                   sx={{
                     p: 2,
                     borderRadius: 2,
