@@ -34,6 +34,23 @@ export default function KategorijaDetalji() {
       created_at: '',
       updated_at: '',
     },
+    {
+      id: 'mock-2',
+      city_id: '',
+      category_id: null,
+      name: 'Kafić Centrala',
+      address: 'Terazije 5, Beograd',
+      description: 'Odličan kafić u centru grada.',
+      image_url: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=300&fit=crop',
+      latitude: null,
+      longitude: null,
+      zoom: null,
+      tips: null,
+      highlights: null,
+      average_rating: 4.5,
+      created_at: '',
+      updated_at: '',
+    },
   ])
   const [category, setCategory] = useState<Category | null>(null)
   const [loading, setLoading] = useState(true)

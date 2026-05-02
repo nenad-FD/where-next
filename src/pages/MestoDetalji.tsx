@@ -34,6 +34,27 @@ export default function MestoDetalji() {
 
   useEffect(() => {
     if (!placeId) return
+    if (placeId.startsWith('mock-')) {
+      setPlace({
+        id: placeId,
+        city_id: '',
+        category_id: null,
+        name: placeId === 'mock-1' ? 'Test Restoran' : 'Kafić Centrala',
+        address: placeId === 'mock-1' ? 'Knez Mihailova 1, Beograd' : 'Terazije 5, Beograd',
+        description: placeId === 'mock-2' ? 'Odličan kafić u centru grada.' : null,
+        image_url: placeId === 'mock-2' ? 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=300&fit=crop' : null,
+        latitude: null,
+        longitude: null,
+        zoom: null,
+        tips: null,
+        highlights: null,
+        average_rating: placeId === 'mock-2' ? 4.5 : null,
+        created_at: '',
+        updated_at: '',
+      })
+      setLoading(false)
+      return
+    }
     getPlaceById(placeId)
       .then(setPlace)
       .catch((e: unknown) => setError(e instanceof Error ? e.message : 'Greška pri učitavanju.'))
