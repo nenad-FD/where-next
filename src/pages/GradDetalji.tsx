@@ -6,13 +6,19 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
   Typography,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AddIcon from '@mui/icons-material/Add'
-import { getCityById, type City } from '../services/cities'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import { getCityById, deleteCity, type City } from '../services/cities'
 import { getCategories, type Category } from '../services/categories'
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
@@ -36,6 +42,22 @@ export default function GradDetalji() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  async function handleDelete() {
+    if (!id) return
+    setDeleting(true)
+    try {
+      await deleteCity(id)
+      navigate('/gradovi')
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Greška pri brisanju.')
+      setConfirmOpen(false)
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   useEffect(() => {
     if (!id) return
@@ -133,8 +155,43 @@ export default function GradDetalji() {
               ))}
             </Box>
           </Box>
+
+          <Box mt={4} pt={3} sx={{ borderTop: '1px solid #e5e4e7' }}>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteOutlineIcon />}
+              onClick={() => setConfirmOpen(true)}
+              sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
+            >
+              Obriši grad
+            </Button>
+          </Box>
         </Box>
       )}
+
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+        <DialogTitle>Obriši grad</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Da li si siguran da želiš da obrišeš grad <strong>{city?.name}</strong>? Ova akcija se ne može poništiti.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setConfirmOpen(false)} sx={{ textTransform: 'none' }}>
+            Otkaži
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            disabled={deleting}
+            onClick={handleDelete}
+            sx={{ textTransform: 'none', fontWeight: 600 }}
+          >
+            {deleting ? <CircularProgress size={18} color="inherit" /> : 'Obriši'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

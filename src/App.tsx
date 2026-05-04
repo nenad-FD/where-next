@@ -1,5 +1,6 @@
 import { Box } from '@mui/material'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+// import AuthGuard from './components/AuthGuard'
 import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
 import Gradovi from './pages/Gradovi'
@@ -12,12 +13,14 @@ import PolitikaPrivatnosti from './pages/PolitikaPrivatnosti'
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f5f5f7' }}>
-      <Sidebar />
-      <Box component="main" sx={{ flexGrow: 1, p: 4 }}>
-        {children}
+    // <AuthGuard>
+      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#f5f5f7' }}>
+        <Sidebar />
+        <Box component="main" sx={{ flexGrow: 1, p: 4 }}>
+          {children}
+        </Box>
       </Box>
-    </Box>
+    // </AuthGuard>
   )
 }
 

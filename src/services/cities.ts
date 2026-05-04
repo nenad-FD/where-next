@@ -27,6 +27,11 @@ export async function getCities(): Promise<City[]> {
   return data
 }
 
+export async function deleteCity(id: string): Promise<void> {
+  const { error } = await supabase.from('cities').delete().eq('id', id)
+  if (error) throw error
+}
+
 export async function createCity(city: CreateCityPayload): Promise<City> {
   const { data, error } = await supabase.from('cities').insert(city).select().single()
   if (error) throw error
