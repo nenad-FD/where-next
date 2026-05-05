@@ -80,7 +80,17 @@ const sections = [
 
 export default function PolitikaPrivatnosti() {
   return (
-    <Box sx={{ maxWidth: 760 }}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: '#f5f5f7',
+        display: 'flex',
+        justifyContent: 'center',
+        px: 2,
+        py: 6,
+      }}
+    >
+    <Box sx={{ maxWidth: 760, width: '100%' }}>
       <Typography variant="h5" fontWeight={700} color="text.primary" mb={1}>
         Politika privatnosti
       </Typography>
@@ -119,6 +129,7 @@ export default function PolitikaPrivatnosti() {
           )}
         </Box>
       ))}
+    </Box>
     </Box>
   )
 }

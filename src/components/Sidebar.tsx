@@ -15,6 +15,7 @@ import {
 } from '@mui/material'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import PrivacyTipIcon from '@mui/icons-material/PrivacyTip'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { signOut } from '../services/auth'
@@ -22,6 +23,7 @@ import { signOut } from '../services/auth'
 const navItems = [
   { label: 'Gradovi', icon: <LocationCityIcon />, path: '/gradovi' },
   { label: 'Politika privatnosti', icon: <PrivacyTipIcon />, path: '/politika-privatnosti' },
+  { label: 'Support', icon: <HelpOutlineIcon />, path: '/support' },
 ]
 
 export default function Sidebar() {

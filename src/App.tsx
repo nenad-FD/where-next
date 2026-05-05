@@ -10,6 +10,7 @@ import KreirajMesto from "./pages/KreirajMesto";
 import KategorijaDetalji from "./pages/KategorijaDetalji";
 import MestoDetalji from "./pages/MestoDetalji";
 import PolitikaPrivatnosti from "./pages/PolitikaPrivatnosti";
+import Support from "./pages/Support";
 
 function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,6 +30,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/politika-privatnosti" element={<PolitikaPrivatnosti />} />
         <Route path="/" element={<Navigate to="/gradovi" replace />} />
         <Route
           path="/gradovi"
@@ -75,14 +78,6 @@ function App() {
           element={
             <AdminLayout>
               <MestoDetalji />
-            </AdminLayout>
-          }
-        />
-        <Route
-          path="/politika-privatnosti"
-          element={
-            <AdminLayout>
-              <PolitikaPrivatnosti />
             </AdminLayout>
           }
         />
