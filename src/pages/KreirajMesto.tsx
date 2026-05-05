@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Alert,
   Box,
@@ -10,23 +10,28 @@ import {
   MenuItem,
   TextField,
   Typography,
-} from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { createPlace, type CreatePlacePayload } from '../services/places'
-import { getCategories, type Category } from '../services/categories'
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { createPlace, type CreatePlacePayload } from "../services/places";
+import { getCategories, type Category } from "../services/categories";
 
 export default function KreirajMesto() {
-  const { id: cityId } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { id: cityId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm<CreatePlacePayload>({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<CreatePlacePayload>({
     defaultValues: {
-      city_id: cityId ?? '',
+      city_id: cityId ?? "",
       category_id: null,
-      name: '',
+      name: "",
       address: null,
       description: null,
       image_url: null,
@@ -36,28 +41,30 @@ export default function KreirajMesto() {
       tips: null,
       highlights: null,
     },
-  })
+  });
 
   useEffect(() => {
-    getCategories().then(setCategories).catch(() => {})
-  }, [])
+    getCategories()
+      .then(setCategories)
+      .catch(() => {});
+  }, []);
 
   async function onSubmit(values: CreatePlacePayload) {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      await createPlace(values)
-      navigate(`/gradovi/${cityId}`)
+      await createPlace(values);
+      navigate(`/gradovi/${cityId}`);
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Greška pri kreiranju mesta.')
+      setError(e instanceof Error ? e.message : "Greška pri kreiranju mesta.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
     <Box sx={{ maxWidth: 600 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 4 }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 4 }}>
         <IconButton onClick={() => navigate(`/gradovi/${cityId}`)} size="small">
           <ArrowBackIcon />
         </IconButton>
@@ -66,12 +73,20 @@ export default function KreirajMesto() {
         </Typography>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+      {error && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {error}
+        </Alert>
+      )}
 
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
+      >
         <TextField
           label="Naziv *"
-          {...register('name', { required: 'Naziv je obavezan' })}
+          {...register("name", { required: "Naziv je obavezan" })}
           error={!!errors.name}
           helperText={errors.name?.message}
           fullWidth
@@ -84,65 +99,59 @@ export default function KreirajMesto() {
             <TextField
               select
               label="Kategorija"
-              value={field.value ?? ''}
+              value={field.value ?? ""}
               onChange={field.onChange}
               fullWidth
             >
               <MenuItem value="">—</MenuItem>
               {categories.map((cat) => (
-                <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
+                <MenuItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </MenuItem>
               ))}
             </TextField>
           )}
         />
 
-        <TextField
-          label="Adresa"
-          {...register('address')}
-          fullWidth
-        />
+        <TextField label="Adresa" {...register("address")} fullWidth />
 
         <TextField
           label="Opis"
-          {...register('description')}
+          {...register("description")}
           multiline
           rows={3}
           fullWidth
         />
 
-        <TextField
-          label="URL slike"
-          {...register('image_url')}
-          fullWidth
-        />
+        <TextField label="URL slike" {...register("image_url")} fullWidth />
 
-        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
           <TextField
             label="Latitude"
             type="number"
-            slotProps={{ htmlInput: { step: 'any' } }}
-            {...register('latitude', { valueAsNumber: true })}
+            slotProps={{ htmlInput: { step: "any" } }}
+            {...register("latitude", { valueAsNumber: true })}
             fullWidth
           />
           <TextField
             label="Longitude"
             type="number"
-            slotProps={{ htmlInput: { step: 'any' } }}
-            {...register('longitude', { valueAsNumber: true })}
+            slotProps={{ htmlInput: { step: "any" } }}
+            {...register("longitude", { valueAsNumber: true })}
             fullWidth
           />
         </Box>
 
-        <TextField
+        {/* <TextField
           label="Zoom"
           type="number"
           {...register('zoom', { valueAsNumber: true })}
           fullWidth
-        />
+        /> */}
 
         <TextField
           label="Tips"
-          {...register('tips')}
+          {...register("tips")}
           multiline
           rows={2}
           fullWidth
@@ -150,7 +159,7 @@ export default function KreirajMesto() {
 
         <TextField
           label="Highlights"
-          {...register('highlights')}
+          {...register("highlights")}
           multiline
           rows={2}
           fullWidth
@@ -162,18 +171,22 @@ export default function KreirajMesto() {
           disabled={loading}
           sx={{
             mt: 1,
-            alignSelf: 'flex-start',
-            bgcolor: '#aa3bff',
+            alignSelf: "flex-start",
+            bgcolor: "#aa3bff",
             borderRadius: 2,
-            textTransform: 'none',
+            textTransform: "none",
             fontWeight: 600,
             px: 4,
-            '&:hover': { bgcolor: '#9333ea' },
+            "&:hover": { bgcolor: "#9333ea" },
           }}
         >
-          {loading ? <CircularProgress size={20} color="inherit" /> : 'Kreiraj mesto'}
+          {loading ? (
+            <CircularProgress size={20} color="inherit" />
+          ) : (
+            "Kreiraj mesto"
+          )}
         </Button>
       </Box>
     </Box>
-  )
+  );
 }

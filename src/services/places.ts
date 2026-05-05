@@ -36,6 +36,11 @@ export async function getPlacesByCityAndCategory(cityId: string, categoryId: str
   return data
 }
 
+export async function deletePlace(id: string): Promise<void> {
+  const { error } = await supabase.from('places').delete().eq('id', id)
+  if (error) throw error
+}
+
 export async function createPlace(place: CreatePlacePayload): Promise<Place> {
   const { data, error } = await supabase.from('places').insert(place).select().single()
   if (error) throw error

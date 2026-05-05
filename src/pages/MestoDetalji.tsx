@@ -3,13 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   Alert,
   Box,
+  Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   IconButton,
   Typography,
 } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { getPlaceById, type Place } from '../services/places'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import { getPlaceById, deletePlace, type Place } from '../services/places'
 
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -31,6 +38,22 @@ export default function MestoDetalji() {
   const [place, setPlace] = useState<Place | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+
+  async function handleDelete() {
+    if (!placeId || placeId.startsWith('mock-')) return
+    setDeleting(true)
+    try {
+      await deletePlace(placeId)
+      navigate(`/gradovi/${cityId}/kategorije/${categoryId}`)
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Greška pri brisanju.')
+      setConfirmOpen(false)
+    } finally {
+      setDeleting(false)
+    }
+  }
 
   useEffect(() => {
     if (!placeId) return
@@ -96,8 +119,43 @@ export default function MestoDetalji() {
           <DetailRow label="Tips" value={place.tips} />
           <DetailRow label="Highlights" value={place.highlights} />
           <DetailRow label="Prosečna ocena" value={place.average_rating} />
+
+          <Box mt={4} pt={3} sx={{ borderTop: '1px solid #e5e4e7' }}>
+            <Button
+              variant="outlined"
+              color="error"
+              startIcon={<DeleteOutlineIcon />}
+              onClick={() => setConfirmOpen(true)}
+              sx={{ borderRadius: 2, textTransform: 'none', fontWeight: 600 }}
+            >
+              Obriši mesto
+            </Button>
+          </Box>
         </Box>
       )}
+
+      <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
+        <DialogTitle>Obriši mesto</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Da li si siguran da želiš da obrišeš mesto <strong>{place?.name}</strong>? Ova akcija se ne može poništiti.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setConfirmOpen(false)} sx={{ textTransform: 'none' }}>
+            Otkaži
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            disabled={deleting}
+            onClick={handleDelete}
+            sx={{ textTransform: 'none', fontWeight: 600 }}
+          >
+            {deleting ? <CircularProgress size={18} color="inherit" /> : 'Obriši'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
