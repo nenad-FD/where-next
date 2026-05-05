@@ -14,7 +14,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       setLoading(false)
     })
 
-    const { data: { subscription } } = onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = onAuthStateChange(async (_event, session) => {
       setSession(session)
     })
 
